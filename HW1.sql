@@ -1,7 +1,7 @@
 set serveroutput on;
 set verify off;
--- QUESTION 2c
-create or replace procedure generate_multiplication_table
+-- QUESTION 2a
+create or replace procedure generate_multiplication_table_for
 (usr_input number)
 as
 small_buff varchar(10);
@@ -40,7 +40,39 @@ begin
 end;
 /
 begin
-    generate_multiplication_table(10);
+    generate_multiplication_table_for(10);
+end;
+/
+-- QUESTION 2c
+CREATE OR REPLACE PROCEDURE generate_multiplication_table_simple (
+    usr_input IN NUMBER
+) AS
+    count1 NUMBER;
+    count2 NUMBER;
+BEGIN
+    count1 := 1;
+    IF usr_input < 1 OR usr_input > 10 THEN
+        dbms_output.put_line('Please enter a value between 1 and 10.');
+    ELSE    
+        LOOP
+            count2 := 1;
+            LOOP
+                IF count2 = usr_input THEN
+                    dbms_output.put_line(count1 * count2);
+                ELSE
+                    dbms_output.put(rpad(count1 * count2, 4));
+                END IF;
+                count2 := count2 + 1;
+                EXIT WHEN count2 > usr_input;
+            END LOOP;
+            count1 := count1 + 1;
+            EXIT WHEN count1 > usr_input;
+        END LOOP;
+    END IF;
+END;
+/
+begin
+    generate_multiplication_table_simple(10);
 end;
 /*
 
